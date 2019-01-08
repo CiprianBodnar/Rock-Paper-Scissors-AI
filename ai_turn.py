@@ -48,32 +48,37 @@ def easy_mode(prob_dict,pattern_dict):
     return get_result(pattern)
 
 def medium_mode(prob_dict,pattern_dict):
-    sum_of_patterns = 0
-    for elem in pattern_dict:
-        sum_of_patterns = sum_of_patterns + pattern_dict[elem]
 
-    if sum_of_patterns<3:
-        return get_random()
+    hard_mode_way = random.randint(1,10)
+    if hard_mode_way <=5:
+        sum_of_patterns = 0
+        for elem in pattern_dict:
+            sum_of_patterns = sum_of_patterns + pattern_dict[elem]
+
+        if sum_of_patterns<3:
+            return get_random()
 
 
-    random_move = random.randint(0,2)
-    if random_move == 0:
-        random_move = 'S'
-    elif random_move == 1:
-        random_move = 'P'
+        random_move = random.randint(0,2)
+        if random_move == 0:
+            random_move = 'S'
+        elif random_move == 1:
+            random_move = 'P'
+        else:
+            random_move = 'R'
+        
+        max_prob = 0
+        pattern = None
+        
+        for elem in pattern_dict:
+            if pattern_dict[elem] > max_prob and elem[0] == random_move:
+                max_prob = pattern_dict[elem]
+                pattern = elem
+        if pattern == None:
+            return get_random()
+        return get_result(pattern)
     else:
-        random_move = 'R'
-    
-    max_prob = 0
-    pattern = None
-    
-    for elem in pattern_dict:
-        if pattern_dict[elem] > max_prob and elem[0] == random_move:
-            max_prob = pattern_dict[elem]
-            pattern = elem
-    if pattern == None:
-        return get_random()
-    return get_result(pattern)
+        return easy_mode(prob_dict,pattern_dict)
     
 
 
