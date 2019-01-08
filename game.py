@@ -163,6 +163,7 @@ def get_outcome(user_move, computer_move):
 def handle_game(key):
     global score
     global moves
+    global user_stats
     if key == Key.ESC or score[0] + score[1] >= 14:
         end_game()
 
@@ -185,6 +186,9 @@ def handle_game(key):
         score = (score[0] + 1, score[1])
 
     moves.append((user_move, computer_move, outcome))
+    user_stats['choices'][user_move] += 1
+    if len(moves) > 2:
+        user_stats['patterns'][moves[-2][0] + user_move] += 1
 
 
 if __name__ == "__main__":
