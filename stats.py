@@ -33,10 +33,10 @@ def save_user_stats(username, user_stats):
         file_pointer = open(stats_filename, 'r')
         stats = json.load(file_pointer)
         file_pointer.close()
-        
+
     stats[username] = user_stats
     file_pointer = open(stats_filename, 'w')
-    json.dump(stats, file_pointer)
+    json.dump(stats, file_pointer, indent=4)
     file_pointer.close()
 
     

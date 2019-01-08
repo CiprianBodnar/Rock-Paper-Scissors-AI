@@ -164,10 +164,14 @@ def handle_game(key):
     global score
     global moves
     global user_stats
-    if key == Key.ESC or score[0] + score[1] >= 14:
+    if key == Key.ESC or score[0] + score[1] >= 15:
         end_game()
+        return
+    last_move = 'U'
+    if len(moves) > 0:
+        last_move = moves[-1][0]
 
-    computer_move = strategy(user_stats['choices'], user_stats['patterns'], difficulty_items.index(difficulty))
+    computer_move = strategy(user_stats['choices'], user_stats['patterns'], last_move, difficulty_items.index(difficulty))
     print(computer_move)
     user_move = ''
     if key == Key.ROCK:
