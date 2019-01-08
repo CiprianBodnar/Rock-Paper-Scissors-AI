@@ -1,8 +1,11 @@
 from msvcrt import getch
 import os
+import stats
+from ai_turn import strategy
+
 
 username = ""
-user_info = {}
+user_stats = {}
 score = (0, 0)
 moves = []
 
@@ -24,10 +27,6 @@ class Key:
     PAPER = 7
     SCISSORS = 8
     UNDEF = 9
-
-
-def get_move():
-    return 'R'
 
 
 def get_pressed_key():
@@ -63,23 +62,32 @@ def draw_interface():
             print('{} {}'.format(item, "<<" if index == menu_item else ""))
 
     elif screen == 'game_over':
-        formatted_moves = map(lambda mv: '{}\t{}'.format(mv[0], mv[1]), moves)
-        print('Game over.\nRounds played: {}\n\n'.format(score[0]+score[1]))
-        print('You\tComputer\n------------\n')
-        for move in formatted_moves:
-            print('{}'.format(move))
-        print('\n------------\n')
-        print('{}\t{}'.format(score[0], score[1]))
+        computer_moves = ''
+        user_moves = ''
+        for move in moves:
+            user_moves = user_moves + move[0] + ' '
+            computer_moves = computer_moves + move[1] + ' '
+
+        print('Game over. You {}\nRounds played: {}\n\n'.format(
+            'WON' if score[0] > score[1] else 'LOST', score[0]+score[1]))
+        print("Computer [{}]: {}".format(' ' + str(score[1])
+                                         if score[1] < 10 else score[1], computer_moves))
+        print("     You [{}]: {}".format(' ' + str(score[0])
+                                         if score[0] < 10 else score[0], user_moves))
 
     elif screen == 'game':
-        formatted_moves = map(lambda mv: '{}\t{}'.format(mv[0], mv[1]), moves)
-        print("Pick your move... (r -> Rock, p -> Paper, s -> Scissors\n")
-        print('Rounds played: {}\n\n'.format(score[0] + score[1]))
-        print('You\tComputer\n------------\n')
-        for move in formatted_moves:
-            print('{}'.format(move))
-        print('\n------------\n')
-        print('{}\t{}'.format(score[0], score[1]))
+        computer_moves = ''
+        user_moves = ''
+        for move in moves:
+            user_moves = user_moves + move[0] + ' '
+            computer_moves = computer_moves + move[1] + ' '
+
+        print(
+            'Pick your move (r -> Rock | p -> Paper | s -> Scissors)\nRounds played: {}\n\n'.format(score[0]+score[1]))
+        print("Computer [{}]: {}".format(' ' + str(score[1])
+                                         if score[1] < 10 else score[1], computer_moves))
+        print("     You [{}]: {}".format(' ' + str(score[0])
+                                         if score[0] < 10 else score[0], user_moves))
 
 
 def process_key(key):
@@ -136,7 +144,7 @@ def start_game():
 
 
 def end_game():
-    # save stats
+    stats.save_user_stats(username, user_stats)
     global screen
     screen = 'game_over'
 
@@ -158,7 +166,8 @@ def handle_game(key):
     if key == Key.ESC or score[0] + score[1] >= 14:
         end_game()
 
-    computer_move = get_move()
+    computer_move = strategy(user_stats['choices'], user_stats['patterns'], difficulty_items.index(difficulty))
+    print(computer_move)
     user_move = ''
     if key == Key.ROCK:
         user_move = 'R'
@@ -174,13 +183,14 @@ def handle_game(key):
         score = (score[0], score[1] + 1)
     elif outcome == 1:
         score = (score[0] + 1, score[1])
-    
+
     moves.append((user_move, computer_move, outcome))
 
 
 if __name__ == "__main__":
-    username = input("Enter your name\n\t")
-
+    username = input("Enter your name\n\t").lower()
+    user_stats = stats.get_user_stats(username)
+    
     while True:
         draw_interface()
         process_key(get_pressed_key())
