@@ -1,6 +1,3 @@
-# 0 - foarfeca
-# 1 - hartie
-# 2 - piatra
 import random
 
 def get_random():
@@ -20,12 +17,12 @@ def get_result(pattern):
     if pattern[1] == 'P':
         return 'S'
 
-def easy_mode():
+def medium_mode():
     return get_random()
 
 
 
-def medium_mode(prob_dict,pattern_dict):
+def hard_mode(prob_dict,pattern_dict):
     # 50% random , 50% anticipare
     sum_of_patterns = 0
     for elem in pattern_dict:
@@ -56,7 +53,7 @@ def medium_mode(prob_dict,pattern_dict):
     
                 
                 
-def hard_mode(prob_dict,pattern_dict):
+def easy_mode(prob_dict,pattern_dict):
     
     sum_of_patterns = 0
     for elem in pattern_dict:
@@ -90,9 +87,9 @@ def strategy(prob_dict,pattern_dict,game_mode):
 
 
     if game_mode == 0:
-        return easy_mode()
+        return easy_mode(prob_dict,pattern_dict)
     elif game_mode == 1:
-        return medium_mode(prob_dict,pattern_dict)
+        return medium_mode()
     else:
         return hard_mode(prob_dict,pattern_dict)
 
