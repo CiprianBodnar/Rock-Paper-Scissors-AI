@@ -87,7 +87,7 @@ def hard_mode(prob_dict,pattern_dict,last_move):
         if last_move == 'U':
             last_move = get_random()
         for elem in pattern_dict:
-            if  elem[0] == last_move and pattern_dict[elem]>max_value:
+            if   pattern_dict[elem]>max_value and elem[0] == last_move :
                 max_value = pattern_dict[elem]
                 pattern = elem
 
@@ -95,7 +95,7 @@ def hard_mode(prob_dict,pattern_dict,last_move):
             return get_random()
         return get_result(pattern)
     else:
-        medium_mode(prob_dict,pattern_dict)
+        return medium_mode(prob_dict,pattern_dict)
                 
                 
 
