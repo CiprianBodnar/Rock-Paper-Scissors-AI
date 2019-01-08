@@ -10,8 +10,15 @@ def medium_mode(prob_dict,pattern_dict):
     # 50% random , 50% anticipare
     if pattern_dict == False or prob_dict == False:
         return random.randint(0,2)
-
     else:
+        sum_of_patterns = 0
+        for elem in pattern_dict:
+            sum_of_patterns = sum_of_patterns + pattern_dict[elem]
+
+        if sum_of_patterns<3:
+            return random.randint(0,2)
+
+
         random_move = random.randint(0,2)
         
         max_prob = 0
@@ -31,6 +38,12 @@ def hard_mode(prob_dict,pattern_dict):
     if pattern_dict == False or prob_dict == False:
         return random.randint(0,2)
     else:
+        sum_of_patterns = 0
+        for elem in pattern_dict:
+            sum_of_patterns = sum_of_patterns + pattern_dict[elem]
+
+        if sum_of_patterns<3:
+            return random.randint(0,2)
         
         maxim = 0
         pattern = None
