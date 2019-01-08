@@ -8,6 +8,8 @@ username = ""
 user_stats = {}
 score = (0, 0)
 moves = []
+high_scores = []
+high_scores_count = 5
 
 screen = 'main_menu'
 menu_item = 0
@@ -82,18 +84,23 @@ def draw_interface():
             user_moves = user_moves + move[0] + ' '
             computer_moves = computer_moves + move[1] + ' '
 
-        print(
-            'Pick your move (r -> Rock | p -> Paper | s -> Scissors)\nRounds played: {}\n\n'.format(score[0]+score[1]))
+        print('Pick your move (r -> Rock | p -> Paper | s -> Scissors)\nRounds played: {}\n\n'.format(score[0]+score[1]))
         print("Computer [{}]: {}".format(' ' + str(score[1])
                                          if score[1] < 10 else score[1], computer_moves))
         print("     You [{}]: {}".format(' ' + str(score[0])
                                          if score[0] < 10 else score[0], user_moves))
+    elif screen == 'high_scores':
+        print('Top {} players\n----------'.format(high_scores_count))
+        for high_score in high_scores:
+            print("{} - {} victories".format(high_score[0], high_score[1]))
+
 
 
 def process_key(key):
     global screen
     global menu_item
     global difficulty
+    global high_scores
     if screen == 'game':
         handle_game(key)
     elif key == Key.ESC and (screen == 'high_scores' or screen == 'game_over'):
@@ -123,6 +130,7 @@ def process_key(key):
                 start_game()
             elif main_menu_items[menu_item] == 'High Scores':
                 screen = 'high_scores'
+                high_scores = stats.get_high_scores(high_scores_count)
             elif main_menu_items[menu_item] == 'Difficulty':
                 screen = 'difficulty'
                 menu_item = 0
@@ -164,9 +172,6 @@ def handle_game(key):
     global score
     global moves
     global user_stats
-    if key == Key.ESC or score[0] + score[1] >= 15:
-        end_game()
-        return
     last_move = 'U'
     if len(moves) > 0:
         last_move = moves[-1][0]
@@ -191,8 +196,16 @@ def handle_game(key):
 
     moves.append((user_move, computer_move, outcome))
     user_stats['choices'][user_move] += 1
+    
     if len(moves) > 2:
         user_stats['patterns'][moves[-2][0] + user_move] += 1
+    
+
+    if key == Key.ESC or score[0] + score[1] >= 15:
+        if score[0] > score[1]:
+            user_stats['wins'] += 1
+        end_game()
+        return
 
 
 if __name__ == "__main__":
