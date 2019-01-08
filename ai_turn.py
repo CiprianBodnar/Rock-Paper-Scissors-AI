@@ -12,6 +12,14 @@ def get_random():
     else:
         return 'R'
 
+def get_result(pattern):
+    if pattern[1] ==  'S':
+        return 'R'
+    if pattern[1] == 'R':
+        return 'P'
+    if pattern[1] == 'P':
+        return 'S'
+
 def easy_mode():
     return get_random()
 
@@ -44,7 +52,8 @@ def medium_mode(prob_dict,pattern_dict):
             pattern = elem
     if pattern == None:
         return get_random()
-    return pattern[1]
+    return get_result(pattern)
+    
                 
                 
 def hard_mode(prob_dict,pattern_dict):
@@ -75,7 +84,7 @@ def hard_mode(prob_dict,pattern_dict):
             pattern = elem
     if pattern == None:
         return get_random()
-    return pattern[1]
+    return get_result(pattern)
 
 def strategy(prob_dict,pattern_dict,game_mode):
 
