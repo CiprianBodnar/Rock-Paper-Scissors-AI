@@ -6,11 +6,11 @@ import random
 def get_random():
     r = random.randint(0,2)
     if r ==0:
-        return 'F'
+        return 'S'
     elif r == 1:
-        return 'H'
-    else:
         return 'P'
+    else:
+        return 'R'
 
 def easy_mode():
     return get_random()
@@ -29,11 +29,11 @@ def medium_mode(prob_dict,pattern_dict):
 
     random_move = random.randint(0,2)
     if random_move == 0:
-        random_move = 'F'
+        random_move = 'S'
     elif random_move == 1:
-        random_move = 'H'
-    else:
         random_move = 'P'
+    else:
+        random_move = 'R'
     
     max_prob = 0
     pattern = None
