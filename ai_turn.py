@@ -1,76 +1,66 @@
-# 0 - easy , foarfeca
-# 1 - medium, hartie
-# 2 - hard, piatra
+# 0 - foarfeca
+# 1 - hartie
+# 2 - piatra
 import random
 def easy_mode():
     return random.randint(0,2)
 
 
-def medium_mode(user_details):
+def medium_mode(prob_dict,pattern_dict):
     # 50% random , 50% anticipare
-    if user_details == False:
+    if pattern_dict == False or prob_dict == False:
         return random.randint(0,2)
 
     else:
         random_move = random.randint(0,2)
-        pattern_for_user = user_details['bodnar_ciprian']['pattern']
+        
         max_prob = 0
         pattern = None
         
-        for elem in pattern_for_user:
-            if pattern_for_user[elem] > max_prob and int ( elem[0] ) == random_move:
-                max_prob = pattern_for_user[elem]
+        for elem in pattern_dict:
+            if pattern_dict[elem] > max_prob and int ( elem[0] ) == random_move:
+                max_prob = pattern_dict[elem]
                 pattern = elem
         if pattern == None:
             return random.randint(0,2)
         return pattern[1]
                 
                 
-def hard_mode(user_details):
+def hard_mode(prob_dict,pattern_dict):
     
-    if user_details == False:
+    if pattern_dict == False or prob_dict == False:
         return random.randint(0,2)
     else:
-        pattern_for_user = user_details['bodnar_ciprian']['pattern']
+        
         maxim = 0
         pattern = None
 
-        prob_for_user = user_details['bodnar_ciprian']['prob']
         max_prob = 0
         tip = 0
-        for elem in prob_for_user:
+        for elem in prob_dict:
             
-            if prob_for_user[elem]> max_prob:
-                max_prob = prob_for_user[elem]
+            if prob_dict[elem]> max_prob:
+                max_prob = prob_dict[elem]
                 tip = (elem)
 
 
-        for elem in pattern_for_user:
-            if pattern_for_user[elem] > maxim and int (elem[0]) == int(tip):
+        for elem in pattern_dict:
+            if pattern_dict[elem] > maxim and int (elem[0]) == int(tip):
                
-                maxim = pattern_for_user[elem]
+                maxim = pattern_dict[elem]
                 pattern = elem
         if pattern == None:
             return random.randint(0,2)
         return pattern[1]
 
-def strategy():
+def strategy(prob_dict,pattern_dict,game_mode):
 
-    user_details = {"bodnar_ciprian": 
-                    {   "prob":{"0":5,"1":5,"2":6},
-                        "pattern":{"02":3,"01":4,"21":7,"20":5,"10":2,"12":8,"00":5,"22":4,"11":6}
-                    }
-                    }
-    blank = {}
-    game_mode = 2
 
     if game_mode == 0:
         return easy_mode()
     elif game_mode == 1:
-        return medium_mode(user_details)
+        return medium_mode(prob_dict,pattern_dict)
     else:
-        
-        return hard_mode(user_details)
+        return hard_mode(prob_dict,pattern_dict)
 
 
-print(strategy())
