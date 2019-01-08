@@ -17,42 +17,6 @@ def get_result(pattern):
     if pattern[1] == 'P':
         return 'S'
 
-def medium_mode():
-    return get_random()
-
-
-
-def hard_mode(prob_dict,pattern_dict):
-    # 50% random , 50% anticipare
-    sum_of_patterns = 0
-    for elem in pattern_dict:
-        sum_of_patterns = sum_of_patterns + pattern_dict[elem]
-
-    if sum_of_patterns<3:
-        return get_random()
-
-
-    random_move = random.randint(0,2)
-    if random_move == 0:
-        random_move = 'S'
-    elif random_move == 1:
-        random_move = 'P'
-    else:
-        random_move = 'R'
-    
-    max_prob = 0
-    pattern = None
-    
-    for elem in pattern_dict:
-        if pattern_dict[elem] > max_prob and elem[0] == random_move:
-            max_prob = pattern_dict[elem]
-            pattern = elem
-    if pattern == None:
-        return get_random()
-    return get_result(pattern)
-    
-                
-                
 def easy_mode(prob_dict,pattern_dict):
     
     sum_of_patterns = 0
@@ -83,14 +47,67 @@ def easy_mode(prob_dict,pattern_dict):
         return get_random()
     return get_result(pattern)
 
-def strategy(prob_dict,pattern_dict,game_mode):
+def medium_mode(prob_dict,pattern_dict):
+    sum_of_patterns = 0
+    for elem in pattern_dict:
+        sum_of_patterns = sum_of_patterns + pattern_dict[elem]
+
+    if sum_of_patterns<3:
+        return get_random()
+
+
+    random_move = random.randint(0,2)
+    if random_move == 0:
+        random_move = 'S'
+    elif random_move == 1:
+        random_move = 'P'
+    else:
+        random_move = 'R'
+    
+    max_prob = 0
+    pattern = None
+    
+    for elem in pattern_dict:
+        if pattern_dict[elem] > max_prob and elem[0] == random_move:
+            max_prob = pattern_dict[elem]
+            pattern = elem
+    if pattern == None:
+        return get_random()
+    return get_result(pattern)
+    
+
+
+
+def hard_mode(prob_dict,pattern_dict,last_move):
+
+    hard_mode_way = random.randint(1,10)
+    if hard_mode_way <=5:
+        max_value = 0
+        pattern = None
+        if last_move == 'U':
+            last_move = get_random()
+        for elem in pattern_dict:
+            if  elem[0] == last_move and pattern_dict[elem]>max_value:
+                max_value = pattern_dict[elem]
+                pattern = elem
+
+        if pattern == None:
+            return get_random()
+        return get_result(pattern)
+    else:
+        medium_mode(prob_dict,pattern_dict)
+                
+                
+
+
+def strategy(prob_dict,pattern_dict,last_move,game_mode):
 
 
     if game_mode == 0:
         return easy_mode(prob_dict,pattern_dict)
     elif game_mode == 1:
-        return medium_mode()
+        return medium_mode(prob_dict,pattern_dict)
     else:
-        return hard_mode(prob_dict,pattern_dict)
+        return hard_mode(prob_dict,pattern_dict,last_move)
 
 
