@@ -13,7 +13,7 @@ def get_random():
         return 'P'
 
 def easy_mode():
-    get_random()
+    return get_random()
 
 
 
@@ -24,7 +24,7 @@ def medium_mode(prob_dict,pattern_dict):
         sum_of_patterns = sum_of_patterns + pattern_dict[elem]
 
     if sum_of_patterns<3:
-        get_random()
+        return get_random()
 
 
     random_move = random.randint(0,2)
@@ -43,7 +43,7 @@ def medium_mode(prob_dict,pattern_dict):
             max_prob = pattern_dict[elem]
             pattern = elem
     if pattern == None:
-        get_random()
+        return get_random()
     return pattern[1]
                 
                 
@@ -54,7 +54,7 @@ def hard_mode(prob_dict,pattern_dict):
         sum_of_patterns = sum_of_patterns + pattern_dict[elem]
 
     if sum_of_patterns<3:
-        get_random()
+        return get_random()
     
     maxim = 0
     pattern = None
@@ -69,12 +69,12 @@ def hard_mode(prob_dict,pattern_dict):
 
 
     for elem in pattern_dict:
-        if pattern_dict[elem] > maxim and  (elem[0]) == (tip):
+        if pattern_dict[elem] > maxim and  elem[0] == tip:
             
             maxim = pattern_dict[elem]
             pattern = elem
     if pattern == None:
-        get_random()
+        return get_random()
     return pattern[1]
 
 def strategy(prob_dict,pattern_dict,game_mode):
